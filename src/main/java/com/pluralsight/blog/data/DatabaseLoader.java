@@ -19,9 +19,12 @@ public class DatabaseLoader implements ApplicationRunner {
     private final String[] gadgets = {
             "Earbuds", "Speakers", "Tripod", "Instant Pot", "Coffee Cup", "Keyboard", "Sunglasses"};
     public List<Post> randomPosts = new ArrayList<>();
+    private final PostRepository postRepository;
     public List<Author> authors = new ArrayList<>();
 
-    public DatabaseLoader() {
+    @Autowired
+    public DatabaseLoader(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class DatabaseLoader implements ApplicationRunner {
         IntStream.range(0,40).forEach(i->{
             String template = templates[i % templates.length];
             String gadget = gadgets[i % gadgets.length];
-
+            postRepository.saveAll(randomPosts);
             String title = String.format(template, gadget);
             Post post = new Post(title, "Lorem ipsum dolor sit amet, consectetur adipiscing elit… ");
             randomPosts.add(post);
